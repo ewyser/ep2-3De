@@ -1,0 +1,11 @@
+% IN MATLAB
+% set precision arithmetic
+typeD = 'double';
+BCK1  = 16;
+BCK2  = 256;
+% compile gpu code
+arg  = [' ' '1 double 1 0.1 ',num2str(BCK1),' ',num2str(BCK2),''];   
+system('chmod +x  /scratch/mwyser/ep3De_v1.0/scripts/setting_Exp2b/shellscript.sh');
+pathToScript = fullfile(['/scratch/mwyser/ep3De_v1.0/scripts/setting_Exp2b/shellscript.sh']);
+shell_run = [pathToScript arg]
+system(shell_run);
