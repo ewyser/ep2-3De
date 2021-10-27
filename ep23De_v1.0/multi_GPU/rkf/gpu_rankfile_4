@@ -1,0 +1,6 @@
+rank 0=node01 slot=0:0
+rank 1=node01 slot=0:5
+rank 2=node01 slot=1:0
+rank 3=node01 slot=1:5
+
+

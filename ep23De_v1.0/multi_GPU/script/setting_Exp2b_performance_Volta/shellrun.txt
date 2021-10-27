@@ -1,0 +1,1 @@
+/scratch/mwyser/MPI_MPM_3D/mpi_ep3De_v2.0/script/setting_Exp2b_performance/shellscript.sh 1 float 1 0.1 16 256 8 9

@@ -1,0 +1,19 @@
+rank 0=node01 slot=0:0
+rank 1=node01 slot=0:5
+rank 2=node01 slot=1:0
+rank 3=node01 slot=1:5
+
+rank 4=node02 slot=0:0
+rank 5=node02 slot=0:5
+rank 6=node02 slot=1:0
+rank 7=node02 slot=1:5
+
+rank 8=node03 slot=0:0
+rank 9=node03 slot=0:5
+rank 10=node03 slot=1:0
+rank 11=node03 slot=1:5
+
+rank 12=node04 slot=0:0
+rank 13=node04 slot=0:5
+rank 14=node04 slot=1:0
+rank 15=node04 slot=1:5

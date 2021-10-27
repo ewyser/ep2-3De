@@ -1,0 +1,107 @@
+%% Export
+% physics
+fid = fopen( 'Del.dat','wb')                                      ;% export
+fwrite(fid, Del(:),typeD)                                         ;% export
+fclose(fid)                                                       ;% export
+iDel = inv(Del)                                                       ;%
+fid = fopen( 'iDel.dat','wb')                                     ;% export
+fwrite(fid, iDel(:),typeD)                                        ;% export
+fclose(fid)                                                       ;% export
+p   = [g;rho0;psi0;nu;E;Kc;Gc;cohr;Hp;t;te;tg]                        ;%
+fid = fopen( 'phys.dat','wb')                                     ;% export
+fwrite(fid,p ,typeD)                                              ;% export
+fclose(fid)                                                       ;% export
+
+for k = 1:nGPU
+    % mesh, topology & boundary conditions
+    x   = mpiD{1,k}{1,1}.x                                            ;% x-th component
+    y   = mpiD{1,k}{1,1}.y                                            ;% y-th component
+    
+    z   = mpiD{1,k}{1,1}.z                                            ;% z-th component
+    fid = fopen(['xn_rank_',num2str(k-1),'.dat'] ,'wb')           ;% export
+    fwrite(fid, [x(:);y(:);z(:)],typeD)                           ;% export
+    fclose(fid)                                                   ;% export
+    e2n = mpiD{1,k}{1,1}.e2N                                          ;% element to nodes topology list
+    fid = fopen(['e2n_rank_',num2str(k-1),'.dat'],'wb')           ;% export
+    fwrite(fid, e2n(:)-1,'int32')                                   ;% export
+    fclose(fid)                                                   ;% export
+    Bx  = int32(mpiD{1,k}{1,2}.x)                                     ;% boundary number in x
+    By  = int32(mpiD{1,k}{1,2}.y)                                     ;% boundary number in y
+    Bz  = int32(mpiD{1,k}{1,2}.z)                                     ;% boundary number in z
+    Bxx = int32(Bx)+0*mpiD{1,k}{1,1}.no                               ;% -
+    Byy = int32(By)+1*mpiD{1,k}{1,1}.no                               ;% -
+    Bzz = int32(Bz)+2*mpiD{1,k}{1,1}.no                               ;% -
+    BC  = ones(mpiD{1,k}{1,1}.no*3,1,'int32')                         ;% -
+    BC([Bxx;Byy;Bzz]) = 0                                             ;% logical vector of active bc's (=0)
+    fid = fopen(['bcs_rank_',num2str(k-1),'.dat'],'wb')           ;% export
+    fwrite(fid, BC(:),'int32')                                    ;% export
+    fclose(fid)                                                   ;% export
+    % material points
+    mk  = find(mpD.x(:,2)>=mpiD{1,k}{1,1}.lim(1) &...
+        mpD.x(:,2)<=mpiD{1,k}{1,1}.lim(2))                     ;% find mps in the mpi background mesh
+    xp  = mpD.x(mk,:)                                                 ;% coordinates
+    fid = fopen(['xp_rank_',num2str(k-1),'.dat'] ,'wb')           ;% export
+    fwrite(fid, xp(:),typeD)                                      ;% export
+    fclose(fid)                                                   ;% export
+    mp  = mpD.m(mk)                                                   ;% mass
+    fid = fopen(['mp_rank_',num2str(k-1),'.dat'] ,'wb')           ;% export
+    fwrite(fid, mp(:),typeD)                                      ;% export
+    fclose(fid)                                                   ;% export
+    lp  = mpD.l(mk,:)                                                 ;% domain size
+    fid = fopen(['lp_rank_',num2str(k-1),'.dat'] ,'wb')           ;% export
+    fwrite(fid, lp(:),typeD)                                      ;% export
+    fclose(fid)                                                   ;% export
+    vol = mpD.V(mk,1)                                                 ;% initial volume
+    fid = fopen(['vol_rank_',num2str(k-1),'.dat'],'wb')           ;% export
+    fwrite(fid, vol(:),typeD)                                  ;% export
+    fclose(fid)                                                   ;% export
+    coh = mpD.coh(mk,:)                                               ;% cohesion
+    fid = fopen(['cohp_rank_',num2str(k-1),'.dat'],'wb')          ;% export
+    fwrite(fid, mpD.coh(:),typeD)                              ;% export
+    fclose(fid)                                                   ;% export
+    phi = mpD.phi(1,mk)                                               ;% friction angle
+    fid = fopen(['phip_rank_',num2str(k-1),'.dat'],'wb')          ;% export
+    fwrite(fid, mpD.phi(:),typeD)                              ;% export
+    fclose(fid)                                                   ;% export
+    % numerical parameters
+    p = [length(mk);...
+        mpiD{1,k}{1,1}.no;...
+        mpiD{1,k}{1,1}.nex*mpiD{1,k}{1,1}.ney*mpiD{1,k}{1,1}.nez;...
+        mpiD{1,k}{1,1}.nex;...
+        mpiD{1,k}{1,1}.ney;...
+        mpiD{1,k}{1,1}.nez;...
+        mpiD{1,k}{1,1}.nn;...
+        mpiD{1,k}{1,1}.h(1);...
+        mpiD{1,k}{1,1}.h(2);...
+        mpiD{1,k}{1,1}.h(3);...
+        min(x(:));...
+        min(y(:));...
+        min(z(:))];
+    fid = fopen( ['param_rank_',num2str(k-1),'.dat'],'wb')        ;%
+    fwrite(fid,p(:),typeD)                                        ;%
+    fclose(fid)                                                   ;%
+    % display geometry
+    if(k==1)
+        figure(3),clf,hold on
+    end
+    if(mod(k,2)==0)
+        ax2=plot3(x,y,z,'g+','LineWidth',1)
+        ax3=plot3(xp(:,1),xp(:,2),xp(:,3),'bs')
+    else
+        ax2=plot3(x,y,z,'kx','LineWidth',1)
+        ax3=plot3(xp(:,1),xp(:,2),xp(:,3),'ro')
+    end
+    axis equal, axis tight
+    pause(.5)
+    
+    
+    figure(3)
+    hold on
+    scatter3(xp,xp,xp(:,),5,coh,'filled')
+    hold off
+    axis equal
+    
+end
+drawnow
+hold off
+drawnow

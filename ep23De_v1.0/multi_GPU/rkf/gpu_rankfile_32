@@ -1,0 +1,39 @@
+rank 0=node01 slot=0:0
+rank 1=node01 slot=0:5
+rank 2=node01 slot=1:0
+rank 3=node01 slot=1:5
+
+rank 4=node02 slot=0:0
+rank 5=node02 slot=0:5
+rank 6=node02 slot=1:0
+rank 7=node02 slot=1:5
+
+rank 8=node03 slot=0:0
+rank 9=node03 slot=0:5
+rank 10=node03 slot=1:0
+rank 11=node03 slot=1:5
+
+rank 12=node04 slot=0:0
+rank 13=node04 slot=0:5
+rank 14=node04 slot=1:0
+rank 15=node04 slot=1:5
+
+rank 16=node05 slot=0:0
+rank 17=node05 slot=0:5
+rank 18=node05 slot=1:0
+rank 19=node05 slot=1:5
+
+rank 20=node06 slot=0:0
+rank 21=node06 slot=0:5
+rank 22=node06 slot=1:0
+rank 23=node06 slot=1:5
+
+rank 24=node07 slot=0:0
+rank 25=node07 slot=0:5
+rank 26=node07 slot=1:0
+rank 27=node07 slot=1:5
+
+rank 28=node08 slot=0:0
+rank 29=node08 slot=0:5
+rank 30=node08 slot=1:0
+rank 31=node08 slot=1:5
