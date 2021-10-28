@@ -1,5 +1,5 @@
 
-# ep2-3De v1.1 #
+# ep2-3De v1.0 #
 
   
 
@@ -7,7 +7,7 @@
 
   
 
-****ep2-3De v1.1**** is a software suite implementation of the material point method (e.g., GIMP) to model elasto-plastic problems on a GPU, using a Drucker-Prager rheology, considering either 2D or 3D configuration. It is written in CUDA C, visualisation and input data generations are written in MATLAB. The latter generates data needed, compile source codes and runs the executables. Post-processing routines can be used for output visualization. The new version v1.1 comes with a multi-GPU implementation of the initial release v1.0.
+****ep2-3De v1.0**** is a software suite implementation of the material point method (e.g., GIMP) to model elasto-plastic problems on a GPU, using a Drucker-Prager rheology, considering either 2D or 3D configuration. It is written in CUDA C, visualisation and input data generations are written in MATLAB. The latter generates data needed, compile source codes and runs the executables. Post-processing routines can be used for output visualization.
 
 As a disclaimer, the interested user should know that we did not test the MPI implementation on other GPU clusters. Hence, we do not guarantee the multi-GPU implementation to be stable or even working on other computing systems. 
 
